@@ -1,0 +1,21 @@
+<h3>{{form.formTitle}}</h3>
+<form #myForm="ngForm" [formGroup]="dynamicFormGroup" class="row g-3">
+<ng-container *ngFor="let control of form.formControls">
+    <div *ngIf="['text', 'email', 'password', 'file'].includes(control.type)" [class]="control?.class">
+        <label for="{{control.name}}" class="form-label" >{{control.label}}</label>
+        <input formControlName="{{control?.name}}" [type]="control?.type" class="form-control" (blur)="onBlur(control.name)">
+        <small *ngIf="dynamicFormGroup.get(control.name)?.invalid && (dynamicFormGroup.get(control.name)?.touched || myForm.submitted)" class="text-danger">{{getValidationErrors(control)}}</small>
+    </div>
+</ng-container>
+
+<div class="col-12">
+    <button (click)="onSubmit(form.saveBtnTitle)" type="submit" class="btn btn-primary mx-2">{{form.saveBtnTitle}}</button>
+    <button (click)="resetForm()" type="button" class="btn btn-secondary mx-2">{{form.resetBtnTitle}}</button>
+</div>
+<div>
+    <hr>
+    <h4>{{ form.userBtnTitle === 'Login' ? 'Already a user?' : 'New User?' }} 
+      <button (click)="toggleForm.emit()" type="button" class="btn btn-primary">{{ form.userBtnTitle }}</button>
+    </h4>
+  </div>  
+</form>
